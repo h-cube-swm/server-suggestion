@@ -12,9 +12,6 @@ with open('surveys.txt','r',encoding='utf-8') as f:
 
             row = spell_checker.check(row).checked
             tokens = tokenizer.morphs(row)
-
             data = row+"<SPLIT>"+' '.join(tokens)
-
             print(data)
-
             o.write(data+'\n')
