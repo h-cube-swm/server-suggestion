@@ -1,1 +1,3 @@
 flask
+git+https://github.com/ssut/py-hanspell.git
+konlpy
