@@ -30,6 +30,11 @@
                 return;
             }
 
+            if (text.value.trim().length < 2) {
+                show.innerHTML = ''
+                return;
+            }
+
             if (currentText == text.value) return;
             currentText = text.value;
             console.log(currentText, text.value)

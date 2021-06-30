@@ -10,9 +10,11 @@ def home():
 
 @app.route('/test', methods=['POST'])
 def order():    
-    text = request.json['text']
-    print(text)
-    order = get_order(text)
+    text = request.json['text'].strip()
+    if(len(text)>2):
+        order = get_order(text)
+    else:
+        order = []
     stringified = json.dumps(order)
     return stringified
 
