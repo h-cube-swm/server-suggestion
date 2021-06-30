@@ -1,19 +1,20 @@
-from flask import Flask
-from hanspell import spell_checker
-from konlpy.tag import Kkma  
+from flask import Flask, request
+from tester import get_order
+import json
 
-kkma=Kkma()  
-
-def tokenizer(text):
-    text= spell_checker.check(text).checked
-    text = kkma.morphs(text)
-    return text
-
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='', static_folder='static',)
 
 @app.route('/')
 def home():
     return "IM ALIVE"
+
+@app.route('/test', methods=['POST'])
+def order():    
+    text = request.json['text']
+    print(text)
+    order = get_order(text)
+    stringified = json.dumps(order)
+    return stringified
 
 if __name__ == '__main__':
     app.run(debug=True)

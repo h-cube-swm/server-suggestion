@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="text" onkeyup="refreshTimer()">
+    </div>
+    <div id="show"> </div>
+    <script>
+        let doUpdate = false;
+        let currentText = ''
+
+        function refreshTimer() {
+            doUpdate = false;
+        }
+
+        setInterval(() => {
+            if (!doUpdate) {
+                doUpdate = true;
+                return;
+            }
+
+            if (currentText == text.value) return;
+            currentText = text.value;
+            console.log(currentText, text.value)
+
+            fetch('/test', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: text.value })
+            }).then(res => res.json()).then((data) => {
+                show.innerHTML = ''
+                for (let i = 0; i < 10; i++) {
+                    show.innerHTML += `<div>Score : ${data[i][0]}, Question : ${data[i][1]}<div>`
+                }
+            })
+        }, 100)
+    </script>
+</body>
+
+</html>
