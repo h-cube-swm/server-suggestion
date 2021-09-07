@@ -12,10 +12,10 @@ def home():
 def order():    
     text = request.json['text'].strip()
     if(len(text)>2):
-        order = get_order(text)[:10]
+        _order = get_order(text)
     else:
-        order = []
-    stringified = json.dumps(order)
+        _order = []
+    stringified = json.dumps(_order)
     return stringified
 
 if __name__ == '__main__':

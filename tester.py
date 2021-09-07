@@ -19,7 +19,7 @@ with open('parsed.txt','r',encoding='utf-8') as f:
 tfidfv = TfidfVectorizer().fit(vecs)
 vecs = tfidfv.transform(vecs)
 
-def get_order(text):
+def get_order(text,num=10):
     text = spell_checker.check(text).checked
     text = ' '.join(tokenizer.morphs(text))
     vector = tfidfv.transform([text]).toarray()[0]
@@ -29,4 +29,4 @@ def get_order(text):
         l = np.linalg.norm(sub)
         result.append([l,docs[i]])
     result.sort(key=lambda x:x[0])
-    return result
+    return result[:num]
