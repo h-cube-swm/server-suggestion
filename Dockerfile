@@ -10,10 +10,7 @@ RUN pip install -r requirements.txt
 RUN apt-get update
 RUN apt-get install -y default-jre
 
-COPY parsed.txt ./
-COPY tester.py ./
-COPY app.py ./
-COPY static ./static
+COPY ./ ./
 
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0

@@ -2,6 +2,10 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from konlpy.tag import Kkma
 from hanspell import spell_checker  
+from preprocess import run
+
+run()
+
 tokenizer=Kkma()
 
 docs = []
