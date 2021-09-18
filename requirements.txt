@@ -1,4 +1,7 @@
-flask
+fastapi
+uvicorn
+gunicorn
+gevent
 git+https://github.com/ssut/py-hanspell.git
 konlpy
 scikit-learn
