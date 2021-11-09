@@ -5,3 +5,4 @@ gevent
 git+https://github.com/ssut/py-hanspell.git
 konlpy
 scikit-learn
+tweepy==3.10.0
