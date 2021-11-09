@@ -8,8 +8,10 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
+
 class Item(BaseModel):
     text: str
+
 
 origins = ["*"]
 
@@ -21,18 +23,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def read_root():
-    return {"Hello": "test World"}
+    return {"Result": "Server Alive."}
 
-@app.post("/test")
-async def order(item: Item):
-    text = item.text.strip()
-    if(len(text)>2):
+
+@app.get("/test")
+async def order(text: str):
+    text = text.strip()
+    if(len(text) > 2):
         _order = get_order(text)
     else:
         _order = []
     return JSONResponse(_order)
-
-# if __name__ == "__main__":
-#     uvicorn.run("main:app")
