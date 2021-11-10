@@ -2,20 +2,30 @@ from hanspell import spell_checker
 from konlpy.tag import Kkma
 import json
 
-SPLITTER = '<SPLIT>'
+tokenizer = Kkma()
 
 
-def run():
-    tokenizer = Kkma()
+def normalize(key):
+    key = key.strip()
+    key = spell_checker.check(key).checked
+    key = tokenizer.morphs(key)
+    return ' '.join(key)
+
+
+def initialize():
+    tokenized_list = []
+
     with open('surveys.json', 'r', encoding='utf-8') as f:
-        with open('parsed.txt', 'w', encoding='utf-8')as o:
-            json_text = f.read()
-            survey_list = json.loads(json_text)
-            for survey in survey_list:
-                title = survey["title"]
-                title = title.strip()
-                title = spell_checker.check(title).checked
-                tokens = tokenizer.morphs(title)
-                data = json.dumps(survey) + SPLITTER+' '.join(tokens)
-                print(data)
-                o.write(data+'\n')
+        json_text = f.read()
+        object_list = json.loads(json_text)
+        for obj in object_list:
+            key = obj["title"]
+            tokens = normalize(key)
+            data = {
+                'tokens': tokens,
+                'object': obj
+            }
+            tokenized_list.append(data)
+
+    with open('parsed.json', 'w', encoding='utf-8') as f:
+        f.write(json.dumps(tokenized_list))

@@ -1,36 +1,32 @@
+import json
 import numpy as np
+from preprocess import initialize, normalize
 from sklearn.feature_extraction.text import TfidfVectorizer
-from konlpy.tag import Kkma
-from hanspell import spell_checker  
-from preprocess import run
 
-run()
+initialize()
 
-tokenizer=Kkma()
+with open('parsed.json', 'r', encoding='utf-8') as f:
+    tokenized_list = json.loads(f.read())
 
+keys = []
 docs = []
-vecs = []
 
-with open('parsed.txt','r',encoding='utf-8') as f:
-    for row in f:
-        row = row.strip()
-        if len(row)<2:
-            continue
-        doc, vec = row.split('<SPLIT>')
-        docs.append(doc)
-        vecs.append(vec)
+for data in tokenized_list:
+    key = data['tokens']
+    obj = data['object']
+    keys.append(key)
+    docs.append(obj)
 
-tfidfv = TfidfVectorizer().fit(vecs)
-vecs = tfidfv.transform(vecs)
+tfidfv = TfidfVectorizer().fit(keys)
+keys = tfidfv.transform(keys).toarray()
 
-def get_order(text,num=10):
-    text = spell_checker.check(text).checked
-    text = ' '.join(tokenizer.morphs(text))
-    vector = tfidfv.transform([text]).toarray()[0]
+
+def get_order(text, num=10):
+    normalized = normalize(text)
+    vector = tfidfv.transform([normalized]).toarray()[0]
     result = []
     for i in range(len(docs)):
-        sub = vector-vecs[i]
-        l = np.linalg.norm(sub)
-        result.append([l,docs[i]])
-    result.sort(key=lambda x:x[0])
+        dist = np.dot(vector, keys[i])
+        result.append([dist, docs[i]])
+    result.sort(key=lambda x: -x[0])
     return result[:num]
