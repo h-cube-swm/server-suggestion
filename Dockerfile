@@ -9,7 +9,7 @@ RUN pip install -r requirements.txt
 RUN apt-get update -y
 RUN apt-get install default-jre -y
 
-COPY ./ ./
+COPY ./src ./
 
 CMD ./init.sh
 EXPOSE 5000
