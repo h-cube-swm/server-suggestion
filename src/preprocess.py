@@ -15,7 +15,7 @@ def normalize(key):
 def initialize():
     tokenized_list = []
 
-    with open('surveys.json', 'r', encoding='utf-8') as f:
+    with open('objects.json', 'r', encoding='utf-8') as f:
         json_text = f.read()
         object_list = json.loads(json_text)
         for obj in object_list:
